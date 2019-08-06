@@ -1,6 +1,10 @@
 const router = require('express').Router();
 
+// const commentsRouter = require('./comments-router.js');
+
 const Data = require('../data/db.js');
+
+// router.use('/:id/comments', commentsRouter);
 
 router.get('/', (req, res) => {
     Data.find()
@@ -78,6 +82,22 @@ router.put('/:id', (req, res) => {
         } else {
             res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
         }
+    } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+})
+
+router.get('/:id/comments', (req, res) => {
+    const { id } = req.params;
+
+    if (id) {
+        Data.findPostComments(id)
+        .then(comments => {
+            res.status(200).json(comments)
+        })
+        .catch(error => {
+            res.status(500).json({ error: "The comments information could not be retrieved." })
+        })
     } else {
         res.status(404).json({ message: "The post with the specified ID does not exist." })
     }
