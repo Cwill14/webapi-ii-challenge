@@ -48,6 +48,7 @@ router.get('/:id', (req, res) => {
         res.status(404).json({ message: "The post with the specified ID does not exist." })
     }
 })
+
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     // console.log(res.body);
