@@ -45,7 +45,7 @@ router.get('/:id', (req, res) => {
 })
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    // console.log(req.body);
+    console.log(res.body);
     // const postDeleted = req.body
     if (id) {
         Data.remove(id)
@@ -62,7 +62,26 @@ router.delete('/:id', (req, res) => {
 
 })
 
-// router.put('/:id')
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+
+    if (id) {
+        if (changes.title && changes.contents) {
+            Data.update(id, changes)
+                .then(updated => {
+                    res.status(200).json(updated)
+                })
+                .catch(error => {
+                    res.status(500).json({ error: "The post information could not be modified." })
+                })
+        } else {
+            res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        }
+    } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+})
 
 
 module.exports = router;
