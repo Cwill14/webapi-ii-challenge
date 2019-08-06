@@ -31,7 +31,7 @@ router.get('/:id', (req, res) => {
     const { id } = req.params;
     // const id = req.params.id;
 
-    if(id) {
+    if (id) {
         Data.findById(id)
             .then(post => {
                 res.status(200).json(post)
@@ -43,7 +43,24 @@ router.get('/:id', (req, res) => {
         res.status(404).json({ message: "The post with the specified ID does not exist." })
     }
 })
-// router.delete('/:id')
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    // console.log(req.body);
+    // const postDeleted = req.body
+    if (id) {
+        Data.remove(id)
+            .then(post => {
+                // Data.findById(id)
+                res.status(200).json({ message: "successfully deleted", "post deleted":  post })
+            })
+            .catch(error => {
+                res.status(500).json({ error: "The post could not be removed" })
+            })
+    } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+
+})
 
 // router.put('/:id')
 
