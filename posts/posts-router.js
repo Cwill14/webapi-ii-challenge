@@ -51,14 +51,14 @@ router.get('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     // console.log(res.body);
-    // // const postDeleted = req.body
-    // let oldData = {};
-    // Data.findById(id).then((post => (oldData = post)))
+    // const postDeleted = req.body
+    let oldData = {};
+    Data.findById(id).then((post => (oldData = post[0])))
 
     if (id) {
         Data.remove(id)
             .then(post => {
-                res.status(200).json({ message: "successfully deleted" })
+                res.status(200).json({ message: "successfully deleted", "deleted post": oldData })
             })
             .catch(error => {
                 res.status(500).json({ error: "The post could not be removed" })
